@@ -10,7 +10,7 @@ const createPatient = catchAsync(async (req: Request, res: Response) => {
     statusCode:201,
     success:true,
     message:"Patient Created Successfully!!",
-    data:null
+    data:result
   })
 
   
