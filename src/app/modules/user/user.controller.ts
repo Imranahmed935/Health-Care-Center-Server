@@ -4,10 +4,10 @@ import { userService } from "./user.service";
 import sendResponse from "../../shared/sendResponse";
 
 const getAllPatient = catchAsync(async (req: Request, res: Response) => {
-  const {limit, page} =req.query;
-  const limit1 = Number(limit);
-  const page1 = Number(page)
-  const result = await userService.getAllPatient({limit1, page1});
+  const {limit, page, searchTerm, sortby, sortOrder, role, status} =req.query;
+  const limit1 = Number(limit) || 10;
+  const page1 = Number(page) || 1
+  const result = await userService.getAllPatient({limit1, page1, searchTerm, sortby, sortOrder, role, status});
   sendResponse(res,{
     statusCode:201,
     success:true,
@@ -26,8 +26,28 @@ const createPatient = catchAsync(async (req: Request, res: Response) => {
     data:result
   })
 });
+const createAdmin = catchAsync(async (req: Request, res: Response) => {
+  const result = await userService.createAdmin(req);
+  sendResponse(res,{
+    statusCode:201,
+    success:true,
+    message:"Patient Created Successfully!!",
+    data:result
+  })
+});
+const createDoctor = catchAsync(async (req: Request, res: Response) => {
+  const result = await userService.createDoctor(req);
+  sendResponse(res,{
+    statusCode:201,
+    success:true,
+    message:"Patient Created Successfully!!",
+    data:result
+  })
+});
 
 export const userController = {
   createPatient,
-  getAllPatient
+  getAllPatient,
+  createAdmin,
+  createDoctor
 };
