@@ -3,6 +3,15 @@ import { fileUploader } from "../../helper/imageUpload";
 import { prisma } from "../../shared/prisma";
 import bcrypt from "bcryptjs";
 
+const getAllPatient = async ({limit1, page1}:{limit1:number, page1:number}) => {
+  const skip = (page1 -1)* limit1;
+  const patients = await prisma.user.findMany({
+    skip,
+    take:limit1
+  });
+  return patients
+};
+
 const createPatient = async (req: Request) => {
   if (req.file) {
     const uploadResult = await fileUploader.uploadCloudinary(req.file);
@@ -26,4 +35,5 @@ const createPatient = async (req: Request) => {
 
 export const userService = {
   createPatient,
+  getAllPatient
 };

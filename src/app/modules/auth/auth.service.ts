@@ -16,8 +16,6 @@ const login = async (payload: { email: string; password: string }) => {
     throw new Error("Password is incorrect!");
   }
 
-  const { password, ...userData } = user;
-
   const accessToken = jwtHelper.generateToken(
     { email: user.email, role: user.role },
     "abcd",
