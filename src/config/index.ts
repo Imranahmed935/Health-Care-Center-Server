@@ -11,5 +11,7 @@ export default {
         cloud_name: process.env.CLOUD_NAME,
         api_key: process.env.API_KEY,
         api_secret: process.env.API_SECRET,
-    }
+    },
+    openRouter_api_key:process.env.OPEN_ROUTER_API_KEY,
+    stripeSecretKey:process.env.STRIPE_SECRET_KEY
 }
