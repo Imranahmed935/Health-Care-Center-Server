@@ -13,5 +13,10 @@ export default {
         api_secret: process.env.API_SECRET,
     },
     openRouter_api_key:process.env.OPEN_ROUTER_API_KEY,
-    stripeSecretKey:process.env.STRIPE_SECRET_KEY
+    stripeSecretKey:process.env.STRIPE_SECRET_KEY,
+        emailSender: {
+        email: process.env.EMAIL,
+        app_pass: process.env.APP_PASS
+    },
+    reset_pass_link:process.env.PASS_LINK
 }
