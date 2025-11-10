@@ -1,4 +1,4 @@
-import { AppointmentStatus, Prisma, UserRole } from "@prisma/client";
+import { AppointmentStatus, PaymentStatus, Prisma, UserRole } from "@prisma/client";
 import { stripe } from "../../helper/stripe";
 import { prisma } from "../../shared/prisma";
 import { IJWTPayload } from "../../types/common";
@@ -151,7 +151,6 @@ const getMyAppointment = async (user: IJWTPayload, filters: any, options: IOptio
 
 }
 
-
 const updateAppointmentStatus = async (appointmentId: string, status: AppointmentStatus, user: IJWTPayload) => {
     const appointmentData = await prisma.appointment.findUniqueOrThrow({
         where: {
@@ -178,9 +177,59 @@ const updateAppointmentStatus = async (appointmentId: string, status: Appointmen
 
 }
 
+const cancelUnpaidAppointment = async ()=>{
+  const thirtyMinAgo = new Date(Date.now()-30 * 60 * 1000)
+
+  const unpaidAppointments = await prisma.appointment.findMany({
+    where:{
+      createdAt:{
+        lte:thirtyMinAgo
+      },
+      paymentStatus:PaymentStatus.UNPAID
+    }
+  })
+
+  const appointmentIdsToCancel = unpaidAppointments.map((appointments)=> appointments.id);
+
+  await prisma.$transaction(async (tnx)=>{
+    await tnx.payment.deleteMany({
+      where:{
+        appointmentId:{
+          in:appointmentIdsToCancel
+        }
+      }
+    })
+
+    await tnx.appointment.deleteMany({
+      where:{
+        id:{
+          in:appointmentIdsToCancel
+        }
+      }
+    })
+
+    for(const unpaidAppointment of unpaidAppointments){
+      await tnx.doctorSchedules.update({
+        where:{
+          doctorId_scheduleId:{
+            doctorId:unpaidAppointment.doctorId,
+            scheduleId:unpaidAppointment.scheduleId
+          }
+        
+        },
+        data:{
+          isBooked:false
+        }
+      })
+    }
+
+  })
+}
+
 
 export const AppointmentService = { 
   createAppointment,
   getMyAppointment,
-  updateAppointmentStatus
+  updateAppointmentStatus,
+  cancelUnpaidAppointment
 };
