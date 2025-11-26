@@ -24,7 +24,8 @@ const scheduleForDoctor = async (req: Request & { user?: IJWTPayload }, res: Res
     statusCode:200,
     success:true,
     message:"Schedule get successfully!",
-    data:result
+    data:result.data,
+    meta:result.meta
   })
 
 }
