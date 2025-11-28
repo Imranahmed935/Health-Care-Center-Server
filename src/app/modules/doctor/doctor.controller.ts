@@ -19,15 +19,15 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
         data: result.data
     })
 })
-const getAiSuggestion = catchAsync(async (req: Request, res: Response) => {
-    const result = await DoctorService.getAiSuggestion(req.body);
-    sendResponse(res, {
-        statusCode: 200,
-        success: true,
-        message: "Ai suggestion fetched successfully!",
-        data: result
-    })
-})
+// const getAiSuggestion = catchAsync(async (req: Request, res: Response) => {
+//     const result = await DoctorService.getAiSuggestion(req.body);
+//     sendResponse(res, {
+//         statusCode: 200,
+//         success: true,
+//         message: "Ai suggestion fetched successfully!",
+//         data: result
+//     })
+// })
 
 const updateIntoDB = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -79,7 +79,7 @@ const softDelete = catchAsync(async (req: Request, res: Response) => {
 export const DoctorController = {
     getAllFromDB,
     updateIntoDB,
-    getAiSuggestion,
+    // getAiSuggestion,
     getByIdFromDB,
     softDelete,
     deleteFromDB

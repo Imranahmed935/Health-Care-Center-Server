@@ -13,6 +13,8 @@ const globalErrorHandler = (
   let message = err.message || "Something went wrong!";
   let error = err;
 
+  console.log(error)
+
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === "P2002") {
       (message = "Duplicate key error"),

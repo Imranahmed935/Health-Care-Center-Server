@@ -152,7 +152,7 @@ const scheduleDelete = async (id: string) => {
     where: {
       id,
     },
-  });
+  });  
   return result;
 };
 
